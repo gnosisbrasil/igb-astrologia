@@ -390,7 +390,7 @@ export default function App() {
       <main>
         <section className="hero">
           <div className="hero-interno">
-            <img src="/logoGnosis.png" alt="Logo Gnosis" className="hero-logo" width="92" height="92" />
+            <img src="/logo-sol.png" alt="Sol Gnóstico" className="hero-logo" width="92" height="92" />
             <p className="hero-eyebrow">Astrologia · Mapa Natal · Autoconhecimento</p>
             <h1>
               Mapa <em>Astral</em>
