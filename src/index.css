@@ -1310,6 +1310,68 @@ input:focus-visible {
   font-size: 12.5px;
 }
 
+.roda-sub.pequena {
+  font-size: 11px;
+  fill: #7d8ca3;
+}
+
+.roda-tick5 {
+  stroke: rgba(236, 200, 5, 0.35);
+  stroke-width: 1;
+}
+
+.roda-grau {
+  fill: #cbd5e1;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.roda-pgrau {
+  fill: #94a3b8;
+  font-size: 10.5px;
+}
+
+.roda-signo,
+.roda-planeta,
+.glifo {
+  font-variant-emoji: text;
+}
+
+.roda-legendas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.roda-legendas span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.bolinha {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.bolinha.conj {
+  background: #ecc805;
+}
+
+.bolinha.harm {
+  background: #7dd3fc;
+}
+
+.bolinha.tenso {
+  background: #f87171;
+}
+
 .roda-legenda {
   color: #94a3b8;
   font-size: 0.78rem;

@@ -1,4 +1,4 @@
-import { SIGNOS } from '../lib/astro';
+import { SIGNOS, formatoGrau } from '../lib/astro';
 
 const CX = 360;
 const CY = 360;
@@ -14,6 +14,15 @@ function linha(r1, r2, lon, ref) {
   const [x1, y1] = ponto(r1, lon, ref);
   const [x2, y2] = ponto(r2, lon, ref);
   return { x1, y1, x2, y2 };
+}
+
+/** Grau/minuto dentro do signo: 22°37′ */
+function grauCurto(lon) {
+  const n = ((lon % 360) + 360) % 360;
+  const resto = n % 30;
+  const g = Math.floor(resto);
+  const m = Math.floor((resto - g) * 60);
+  return `${g}°${String(m).padStart(2, '0')}′`;
 }
 
 /** Afasta glifos vizinhos para não sobrepor (graus). */
@@ -34,6 +43,8 @@ const NOMES_PLANETAS = new Set([
   'Sol', 'Lua', 'Mercúrio', 'Vênus', 'Marte', 'Júpiter', 'Saturno', 'Urano', 'Netuno', 'Plutão',
 ]);
 
+const ANGULOS = { 1: 'ASC', 4: 'IC', 7: 'DSC', 10: 'MC' };
+
 function corAspecto(a) {
   if (a.aspecto === 'Conjunção') return '#ecc805';
   return a.harmonico ? '#7dd3fc' : '#f87171';
@@ -48,92 +59,99 @@ export default function RodaMapa({ mapa }) {
   return (
     <svg viewBox="0 0 720 720" className="roda" role="img" aria-label={`Roda do mapa astral de ${mapa.nome}`}>
       <circle cx={CX} cy={CY} r={340} className="roda-fundo" />
+      {/* graduação de graus */}
+      {SIGNOS.map((s, i) => (
+        <g key={`tick-${s.nome}`}>
+          {[0, 5, 10, 15, 20, 25].map((d) => {
+            const l = linha(d === 0 ? 322 : 330, 340, i * 30 + d, ref);
+            return <line key={d} {...l} className={d === 0 ? 'roda-div' : 'roda-tick5'} />;
+          })}
+        </g>
+      ))}
       {/* anel dos signos */}
       <circle cx={CX} cy={CY} r={340} className="roda-linha" />
       <circle cx={CX} cy={CY} r={290} className="roda-linha" />
       {SIGNOS.map((s, i) => {
-        const l = linha(290, 340, i * 30, ref);
-        const [gx, gy] = ponto(315, i * 30 + 15, ref);
+        const [gx, gy] = ponto(312, i * 30 + 15, ref);
         return (
-          <g key={s.nome}>
-            <line {...l} className="roda-div" />
-            <text x={gx} y={gy} className="roda-signo" textAnchor="middle" dominantBaseline="central">
-              {s.simbolo}
+          <text key={s.nome} x={gx} y={gy} className="roda-signo" textAnchor="middle" dominantBaseline="central">
+            {s.simbolo}
+          </text>
+        );
+      })}
+      {/* anel das casas */}
+      <circle cx={CX} cy={CY} r={290} className="roda-linha" />
+      <circle cx={CX} cy={CY} r={228} className="roda-linha" />
+      {Array.from({ length: 12 }, (_, k) => {
+        const c = k + 1;
+        const l = linha(228, 290, mapa.cuspides[c], ref);
+        const largura = (mapa.cuspides[(c % 12) + 1] - mapa.cuspides[c] + 360) % 360;
+        const [nx, ny] = ponto(244, mapa.cuspides[c] + largura / 2, ref);
+        const [cx, cy] = ponto(278, mapa.cuspides[c], ref);
+        return (
+          <g key={c}>
+            <line {...l} className={c % 3 === 1 ? 'roda-cuspide forte' : 'roda-cuspide'} />
+            <text x={nx} y={ny} className="roda-casa" textAnchor="middle" dominantBaseline="central">
+              {c}
+            </text>
+            <text x={cx} y={cy} className="roda-grau" textAnchor="middle" dominantBaseline="central">
+              <title>{`Cúspide da casa ${c}: ${formatoGrau(mapa.cuspides[c])}`}</title>
+              {grauCurto(mapa.cuspides[c])}
             </text>
           </g>
         );
       })}
-      {/* anel das casas */}
-      <circle cx={CX} cy={CY} r={230} className="roda-linha" />
-      {Array.from({ length: 12 }, (_, k) => {
-        const c = k + 1;
-        const l = linha(230, 290, mapa.cuspides[c], ref);
-        const meio = mapa.cuspides[c] + (((mapa.cuspides[(c % 12) + 1] - mapa.cuspides[c] + 360) % 360) / 2);
-        const [nx, ny] = ponto(258, meio, ref);
-        const ang = mapa.ascendente || c !== 1;
-        return (
-          <g key={c}>
-            <line {...l} className={c % 3 === 1 ? 'roda-cuspide forte' : 'roda-cuspide'} />
-            {ang && (
-              <text x={nx} y={ny} className="roda-casa" textAnchor="middle" dominantBaseline="central">
-                {c}
-              </text>
-            )}
-          </g>
-        );
-      })}
+      {/* ângulos */}
+      {mapa.ascendente &&
+        [1, 4, 7, 10].map((c) => {
+          const [ax, ay] = ponto(261, mapa.cuspides[c], ref);
+          return (
+            <text key={c} x={ax} y={ay} className="roda-angulo" textAnchor="middle" dominantBaseline="central">
+              <title>{`${ANGULOS[c]}: ${formatoGrau(mapa.cuspides[c])}`}</title>
+              {ANGULOS[c]}
+            </text>
+          );
+        })}
       {/* aspectos */}
       {linhas.map((a, i) => {
-        const [x1, y1] = ponto(150, angPlaneta.get(a.de), ref);
-        const [x2, y2] = ponto(150, angPlaneta.get(a.para), ref);
+        const [x1, y1] = ponto(148, angPlaneta.get(a.de), ref);
+        const [x2, y2] = ponto(148, angPlaneta.get(a.para), ref);
         return (
           <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={corAspecto(a)} className="roda-aspecto">
             <title>{`${a.de} ${a.simbolo} ${a.para} (orbe ${a.orbe}°)`}</title>
           </line>
         );
       })}
-      <circle cx={CX} cy={CY} r={150} className="roda-linha fina" />
+      <circle cx={CX} cy={CY} r={148} className="roda-linha fina" />
       {/* planetas */}
       {mapa.planetas.map((p) => {
-        const [gx, gy] = ponto(192, glifos.get(p.id), ref);
-        const t = linha(215, 228, p.longitude, ref);
+        const gLon = glifos.get(p.id);
+        const [gx, gy] = ponto(190, gLon, ref);
+        const [tx, ty] = ponto(168, gLon, ref);
+        const t = linha(212, 226, p.longitude, ref);
         return (
           <g key={p.id}>
             <line {...t} className="roda-tick" />
             <text x={gx} y={gy} className="roda-planeta" textAnchor="middle" dominantBaseline="central">
+              <title>{`${p.nome}: ${formatoGrau(p.longitude)} — Casa ${p.casa}${p.retro ? ' (retrógrado)' : ''}`}</title>
               {p.simbolo}
               {p.retro ? 'ᴿ' : ''}
+            </text>
+            <text x={tx} y={ty} className="roda-pgrau" textAnchor="middle" dominantBaseline="central">
+              {grauCurto(p.longitude)}
             </text>
           </g>
         );
       })}
-      {/* ângulos */}
-      {mapa.ascendente && (
-        <g>
-          {(() => {
-            const [ax, ay] = ponto(258, mapa.ascendente.longitude, ref);
-            return (
-              <text x={ax} y={ay} className="roda-angulo" textAnchor="middle" dominantBaseline="central">
-                ASC
-              </text>
-            );
-          })()}
-          {(() => {
-            const [mx, my] = ponto(258, mapa.meioCeu.longitude, ref);
-            return (
-              <text x={mx} y={my} className="roda-angulo" textAnchor="middle" dominantBaseline="central">
-                MC
-              </text>
-            );
-          })()}
-        </g>
-      )}
       {/* centro */}
-      <text x={CX} y={CY - 8} className="roda-nome" textAnchor="middle">
-        {mapa.nome.length > 26 ? `${mapa.nome.slice(0, 26)}…` : mapa.nome}
+      <text x={CX} y={CY - 20} className="roda-nome" textAnchor="middle">
+        {mapa.nome.length > 24 ? `${mapa.nome.slice(0, 24)}…` : mapa.nome}
       </text>
-      <text x={CX} y={CY + 16} className="roda-sub" textAnchor="middle">
+      <text x={CX} y={CY + 4} className="roda-sub" textAnchor="middle">
         {mapa.dataNascimento} · {mapa.horaNascimento === 'desconhecida' ? 'hora desconhecida' : mapa.horaNascimento}
+      </text>
+      <text x={CX} y={CY + 24} className="roda-sub pequena" textAnchor="middle">
+        {(mapa.local || '').length > 36 ? `${mapa.local.slice(0, 36)}…` : mapa.local}
       </text>
     </svg>
   );

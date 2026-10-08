@@ -552,6 +552,18 @@ export default function App() {
                   <p className="roda-legenda">
                     Casas: sistema {resultado.sistemaCasas} · {resultado.fuso} (UTC{Number(resultado.offsetHoras.replace(',', '.')) >= 0 ? '+' : ''}{resultado.offsetHoras}h)
                   </p>
+                  {(() => {
+                    const conj = resultado.aspectos.filter((a) => a.aspecto === 'Conjunção').length;
+                    const harm = resultado.aspectos.filter((a) => a.harmonico).length;
+                    const tenso = resultado.aspectos.length - conj - harm;
+                    return (
+                      <div className="roda-legendas">
+                        <span><i className="bolinha conj" />Conjunção ×{conj}</span>
+                        <span><i className="bolinha harm" />Harmônicos ×{harm}</span>
+                        <span><i className="bolinha tenso" />Tensos ×{tenso}</span>
+                      </div>
+                    );
+                  })()}
                 </div>
                 <div className="astro-coluna">
                   <div className="mapa-grade destaques">

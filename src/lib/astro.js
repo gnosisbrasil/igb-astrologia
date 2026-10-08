@@ -5,39 +5,39 @@ import tzLookup from 'tz-lookup';
 export const BUSCA_URL = 'https://busca.gnosisbrasil.com/?search=';
 
 export const SIGNOS = [
-  { nome: 'Áries', simbolo: '♈', elemento: 'Fogo', qualidade: 'Cardinal', regente: 'Marte' },
-  { nome: 'Touro', simbolo: '♉', elemento: 'Terra', qualidade: 'Fixo', regente: 'Vênus' },
-  { nome: 'Gêmeos', simbolo: '♊', elemento: 'Ar', qualidade: 'Mutável', regente: 'Mercúrio' },
-  { nome: 'Câncer', simbolo: '♋', elemento: 'Água', qualidade: 'Cardinal', regente: 'Lua' },
-  { nome: 'Leão', simbolo: '♌', elemento: 'Fogo', qualidade: 'Fixo', regente: 'Sol' },
-  { nome: 'Virgem', simbolo: '♍', elemento: 'Terra', qualidade: 'Mutável', regente: 'Mercúrio' },
-  { nome: 'Libra', simbolo: '♎', elemento: 'Ar', qualidade: 'Cardinal', regente: 'Vênus' },
-  { nome: 'Escorpião', simbolo: '♏', elemento: 'Água', qualidade: 'Fixo', regente: 'Plutão' },
-  { nome: 'Sagitário', simbolo: '♐', elemento: 'Fogo', qualidade: 'Mutável', regente: 'Júpiter' },
-  { nome: 'Capricórnio', simbolo: '♑', elemento: 'Terra', qualidade: 'Cardinal', regente: 'Saturno' },
-  { nome: 'Aquário', simbolo: '♒', elemento: 'Ar', qualidade: 'Fixo', regente: 'Urano' },
-  { nome: 'Peixes', simbolo: '♓', elemento: 'Água', qualidade: 'Mutável', regente: 'Netuno' },
+  { nome: 'Áries', simbolo: '♈\uFE0E', elemento: 'Fogo', qualidade: 'Cardinal', regente: 'Marte' },
+  { nome: 'Touro', simbolo: '♉\uFE0E', elemento: 'Terra', qualidade: 'Fixo', regente: 'Vênus' },
+  { nome: 'Gêmeos', simbolo: '♊\uFE0E', elemento: 'Ar', qualidade: 'Mutável', regente: 'Mercúrio' },
+  { nome: 'Câncer', simbolo: '♋\uFE0E', elemento: 'Água', qualidade: 'Cardinal', regente: 'Lua' },
+  { nome: 'Leão', simbolo: '♌\uFE0E', elemento: 'Fogo', qualidade: 'Fixo', regente: 'Sol' },
+  { nome: 'Virgem', simbolo: '♍\uFE0E', elemento: 'Terra', qualidade: 'Mutável', regente: 'Mercúrio' },
+  { nome: 'Libra', simbolo: '♎\uFE0E', elemento: 'Ar', qualidade: 'Cardinal', regente: 'Vênus' },
+  { nome: 'Escorpião', simbolo: '♏\uFE0E', elemento: 'Água', qualidade: 'Fixo', regente: 'Plutão' },
+  { nome: 'Sagitário', simbolo: '♐\uFE0E', elemento: 'Fogo', qualidade: 'Mutável', regente: 'Júpiter' },
+  { nome: 'Capricórnio', simbolo: '♑\uFE0E', elemento: 'Terra', qualidade: 'Cardinal', regente: 'Saturno' },
+  { nome: 'Aquário', simbolo: '♒\uFE0E', elemento: 'Ar', qualidade: 'Fixo', regente: 'Urano' },
+  { nome: 'Peixes', simbolo: '♓\uFE0E', elemento: 'Água', qualidade: 'Mutável', regente: 'Netuno' },
 ];
 
 export const PLANETAS = [
-  { id: 'Sun', nome: 'Sol', simbolo: '☉' },
-  { id: 'Moon', nome: 'Lua', simbolo: '☽' },
-  { id: 'Mercury', nome: 'Mercúrio', simbolo: '☿' },
-  { id: 'Venus', nome: 'Vênus', simbolo: '♀' },
-  { id: 'Mars', nome: 'Marte', simbolo: '♂' },
-  { id: 'Jupiter', nome: 'Júpiter', simbolo: '♃' },
-  { id: 'Saturn', nome: 'Saturno', simbolo: '♄' },
-  { id: 'Uranus', nome: 'Urano', simbolo: '♅' },
-  { id: 'Neptune', nome: 'Netuno', simbolo: '♆' },
-  { id: 'Pluto', nome: 'Plutão', simbolo: '♇' },
+  { id: 'Sun', nome: 'Sol', simbolo: '☉\uFE0E' },
+  { id: 'Moon', nome: 'Lua', simbolo: '☽\uFE0E' },
+  { id: 'Mercury', nome: 'Mercúrio', simbolo: '☿\uFE0E' },
+  { id: 'Venus', nome: 'Vênus', simbolo: '♀\uFE0E' },
+  { id: 'Mars', nome: 'Marte', simbolo: '♂\uFE0E' },
+  { id: 'Jupiter', nome: 'Júpiter', simbolo: '♃\uFE0E' },
+  { id: 'Saturn', nome: 'Saturno', simbolo: '♄\uFE0E' },
+  { id: 'Uranus', nome: 'Urano', simbolo: '♅\uFE0E' },
+  { id: 'Neptune', nome: 'Netuno', simbolo: '♆\uFE0E' },
+  { id: 'Pluto', nome: 'Plutão', simbolo: '♇\uFE0E' },
 ];
 
 export const ASPECTOS_DEF = [
-  { nome: 'Conjunção', simbolo: '☌', angulo: 0, orbe: 8 },
-  { nome: 'Sextil', simbolo: '⚹', angulo: 60, orbe: 4 },
-  { nome: 'Quadratura', simbolo: '□', angulo: 90, orbe: 6 },
-  { nome: 'Trígono', simbolo: '△', angulo: 120, orbe: 6 },
-  { nome: 'Oposição', simbolo: '☍', angulo: 180, orbe: 8 },
+  { nome: 'Conjunção', simbolo: '☌\uFE0E', angulo: 0, orbe: 8 },
+  { nome: 'Sextil', simbolo: '⚹\uFE0E', angulo: 60, orbe: 4 },
+  { nome: 'Quadratura', simbolo: '□\uFE0E', angulo: 90, orbe: 6 },
+  { nome: 'Trígono', simbolo: '△\uFE0E', angulo: 120, orbe: 6 },
+  { nome: 'Oposição', simbolo: '☍\uFE0E', angulo: 180, orbe: 8 },
 ];
 
 const D2R = Math.PI / 180;
